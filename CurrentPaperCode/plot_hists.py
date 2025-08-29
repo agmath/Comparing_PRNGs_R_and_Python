@@ -1,3 +1,10 @@
+##################################
+### Produce Histograms for     ###
+### random sequences generated ###
+### using Mersenne Twister in  ###
+### R and Python               ###
+##################################
+
 import importlib.util
 import matplotlib.pyplot as plt
 import seaborn as sns

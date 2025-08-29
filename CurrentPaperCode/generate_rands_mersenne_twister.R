@@ -1,3 +1,10 @@
+##################################
+### Helper function for        ###
+### generating random sequences###
+### using Mersenne Twister in  ###
+### R                          ###
+##################################
+
 # R code (Mersenne)
 ## generate random numbers in r
 

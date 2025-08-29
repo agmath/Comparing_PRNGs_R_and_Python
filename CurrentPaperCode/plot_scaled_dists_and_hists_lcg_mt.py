@@ -1,3 +1,11 @@
+##################################
+### Produce Distribution Plots ###
+### for comparing sequences    ###
+### generated using Mersenne   ###
+### Twister and Linear         ###
+### Congruence                 ###
+##################################
+
 import importlib.util
 import numpy as np
 import matplotlib.pyplot as plt

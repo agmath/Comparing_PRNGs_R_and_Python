@@ -1,3 +1,10 @@
+##################################
+### Helper function for        ###
+### generating random sequences###
+### using Linear Congruence    ###
+### implemented in Python      ###
+##################################
+
 # Generate sequence with same parameters
 def generate_lcg(seed, n, a, c, m):
     s = seed

@@ -1,4 +1,11 @@
 import importlib.util
+##################################
+### Plot distributions for     ###
+### random sequences generated ###
+### using Mersenne Twister in  ###
+### R and Python               ###
+##################################
+
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np

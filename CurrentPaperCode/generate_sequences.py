@@ -1,3 +1,10 @@
+##################################
+### Helper function for        ###
+### generating random sequences###
+### using Mersenne Twister --  ###
+### calls generate_rands_*()   ###
+##################################
+
 def generate_sequences(seq_length = 2**14 - 1, max_rand = 99999, rand_seed = 1234):
   import rpy2.robjects as robjects
   from rpy2.robjects.packages import importr

@@ -1,3 +1,11 @@
+##################################
+### Directly compare elements  ###
+### of random sequences        ###
+### generated using Mersenne   ### 
+### Twister and Linear         ###
+### Congruence                 ###
+##################################
+
 import importlib.util
 import numpy as np
 

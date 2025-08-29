@@ -1,3 +1,10 @@
+##################################
+### Run KS-test for comparing  ###
+### random sequences generated ###
+### using Mersenne Twister and ###
+### Linear Congruence          ###
+##################################
+
 import importlib.util
 from scipy.stats import ks_2samp
 import numpy as np
