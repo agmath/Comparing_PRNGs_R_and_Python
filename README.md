@@ -1,3 +1,5 @@
 # Comparing p-RNGs in R and Python
 
-A repository for code to accompany the paper titled A Comparison of pseudo-Random Number Generators in R and Python by Mata-Toledo, Dumnich, Ryan, and Gilbert
+A repository for code to accompany the paper titled A Comparison of pseudo-Random Number Generators in R and Python by Mata-Toledo, Dumnich, Ryan, and Gilbert. Functions utilized and referenced throughout the paper are contained in the `CurrentPaperCode` folder. Any script names beginning with `generate_*` are helper functions referenced by the other scripts in the folder. These helper functions are used to generate the random sequences of values.
+
+In this paper, we explored the implementations of the Mersenne Twister algorithm in both R and Python. We also considered the Linear Congruence Generator and the XORshift128+ algorithm. We wrote these algorithms from scratch, so their implementations in both R and Python would yield identical sequences. Because of this, we only implemented them in Python and then evaluated the quality of the resulting random sequences and compared their distributions to those of the Mersenne Twister and to one another as well.
