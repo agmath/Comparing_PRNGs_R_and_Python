@@ -29,5 +29,8 @@ calc_descriptives_mt_seqs <- function(num_seqs = 10, seq_length = 2^14 - 1, max_
       bind_rows(seq_sum_df)
   }
   
+  results_df <- results_df %>%
+    slice(2:n())
+  
   return(results_df)
 }
