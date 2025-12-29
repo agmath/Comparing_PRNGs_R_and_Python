@@ -6,7 +6,11 @@
 ##################################
 
 # Generate sequence with same parameters
-def generate_lcg(seed, n, a, c, m):
+def generate_lcg(seed, 
+                  n, 
+                  a, 
+                  c, 
+                  m):
     s = seed
     rand_seq = []
     for _ in range(n):

@@ -4,10 +4,10 @@
 ### using XORshift128+         ###
 ### implemented in Python      ###
 ##################################
-
+import numpy as np
+import pandas as pd
+  
 def generate_xor_shift_128(seed1, seed2, n):
-  import numpy as np
-  import pandas as pd
 
   s1 = seed1
   s2 = seed2

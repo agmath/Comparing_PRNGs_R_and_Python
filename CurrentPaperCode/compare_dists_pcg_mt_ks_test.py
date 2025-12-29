@@ -2,24 +2,21 @@
 ### Run KS-test for comparing  ###
 ### random sequences generated ###
 ### using Mersenne Twister and ###
-### Linear Congruence          ###
+### Permuted Congruence        ### 
+### Generator Algorithm        ###
 ##################################
 
 import importlib.util
 from scipy.stats import ks_2samp
-import numpy as np
+from numpy.random import Generator, PCG64DXSM
 import generate_sequences as gen_seqs_mt
-import generate_rands_lcg as gen_seqs_lcg
 import get_seeds_for_null_distributions as get_null_seeds
 
-def compare_dists_lcg_mt_ks_test(seq_length = 2**14 - 1, 
+def compare_dists_pcg_mt_ks_test(seq_length = 2**14 - 1, 
                                  min_rand = 0,
                                  max_rand = 99999, 
-                                 rand_seed = 1234, 
-                                 a = 1664525, 
-                                 c = 1013904223, 
-                                 m = 2**32):
-  
+                                 rand_seed = 1234):
+                                   
   # Generate random sequence with Mersenne Twister
   # We will not use the sequence_r_mt here
   sequence_r_mt, sequence_py_mt = gen_seqs_mt.generate_sequences(seq_length, 
@@ -27,14 +24,22 @@ def compare_dists_lcg_mt_ks_test(seq_length = 2**14 - 1,
                                               max_rand, 
                                               rand_seed)
 
-  sequence_py_mt_scaled = np.array(sequence_py_mt) / max_rand
+  ###############################################################################
+  # Generate random sequence with PCG
+  ###############################################################################
+  # https://realpython.com/numpy-random-number-generator/ indicates that this PCG
+  # will become the default version in future Python versions.
+  #
+  # Documentation:
+  # https://numpy.org/doc/2.3/reference/random/index.html#module-numpy.random
+  ###############################################################################
+  rng = Generator(PCG64DXSM(rand_seed))
+  sequence_py_pcg = rng.integers(low=min_rand, 
+                                 high=max_rand+1, 
+                                 size=seq_length)  #high is exclusive
 
-                                                        
-  # Generate random sequence with LCG
-  sequence_py_lcg = gen_seqs_lcg.generate_lcg(rand_seed, seq_length, a, c, m)
-  sequence_py_lcg_scaled = np.array(sequence_py_lcg) / m
-  
-  ks_stat, p_value = ks_2samp(sequence_py_mt_scaled, sequence_py_lcg_scaled)
+
+  ks_stat, p_value = ks_2samp(sequence_py_pcg, sequence_py_mt)
   #Printing if desired
   #print(f"KS Statistic: {ks_stat:.4f}")
   #print(f"p-value: {p_value:.4f}")
@@ -43,36 +48,28 @@ def compare_dists_lcg_mt_ks_test(seq_length = 2**14 - 1,
 
 
 
-def generate_lcg_mt_ks_test_null_distribution(seq_length = 2**14 - 1, 
-                                            min_rand = 0,
-                                            max_rand = 99999,
-                                            a = 1664525, 
-                                            c = 1013904223, 
-                                            m = 2**32):
-  """
-    Generate many pairs of LCG and MT sequences to compare.
-    Run a ks test on each pair.
-    Record the KS test statistic, p-value, and if the hypothess is rejected or not.
-       H0:  The Distributions of the LCG sequence and MT sequence are the same
-       HA:  The Distributions of the LCG sequence and MT sequence are not the same
-  """
-
-
+#Function to generate many pairs of PCG and MT sequences to compare.
+#Run a ks test on each pair.
+#Record the KS test statistic, p-value, and if the hypothess is rejected or not.
+#     H0:  The Distributions of the PCG sequence and MT sequence are the same
+#    HA:  The Distributions of the PCG sequence and MT sequence are not the same
+def generate_pcg_mt_ks_test_null_distribution(seq_length = 2**14 - 1, 
+                                              min_rand = 0,
+                                              max_rand = 99999):
+  
   #By default, the seeds will be between 0-2**31 (R's biggest integer) and
   #10000 seeds will be generated.  If the seeds have been generated prior, 
   #they will not be overwritten but a file with the previously generated
   #seeds will be read in.
   seeds_df = get_null_seeds.get_seeds_for_null_distributions()
                                         
-  
   #use each seed to launch a compare_dists_mt_mt_ks_test                                      
   seeds_df['ks_test_results'] = seeds_df['seed'].progress_apply(
-    lambda current_seed: compare_dists_lcg_mt_ks_test(
+    lambda current_seed: compare_dists_pcg_mt_ks_test(
         seq_length, 
         min_rand,
         max_rand, 
-        current_seed, 
-        a, c, m))
+        current_seed))
         
   #The ks_test_results column has a list with: [ks test statistic, p-value, reject H0 or not].
   #Let's split the column containing a 3 element list into 3 distinct columns.                              

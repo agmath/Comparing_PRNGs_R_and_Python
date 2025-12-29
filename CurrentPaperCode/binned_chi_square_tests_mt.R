@@ -1,14 +1,25 @@
 library(dplyr)
 
 
-binned_chisq_tests_mt_seqs <- function(num_bins = 15, num_seqs = 10, seq_length = 2^14 - 1, max_rand = 1e5 - 1, seed = 1234){
-  source("CurrentPaperCode/generate_multiple_rand_seqs_mt.R")
+binned_chi_square_tests_mt <- function(num_seqs = 10, 
+                                       seq_length = 2^14 - 1, 
+                                       min_rand = 0,
+                                       max_rand = 1e5 - 1, 
+                                       seed = 1234, 
+                                       num_bins = 15) {
+  
+  source("generate_multiple_rand_seqs_mt.R")
+  
   
   #Generate sequences using Mersenne Twister
-  pRNGseqs_mt <- generate_mt_rands(num_seqs, seq_length, max_rand, seed)
+  pRNGseqs_mt <- generate_mt_rands(num_seqs, 
+                                   seq_length, 
+                                   min_rand, 
+                                   max_rand, 
+                                   seed)
   
   #Create bins
-  bin_breaks <- seq(0, max_rand, length.out = num_bins + 1)
+  bin_breaks <- seq(min_rand, max_rand, length.out = num_bins + 1)
   
   #Initialize vector to store results
   chi_sq_results <- c()
